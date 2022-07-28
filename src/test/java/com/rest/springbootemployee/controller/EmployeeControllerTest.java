@@ -33,7 +33,7 @@ public class EmployeeControllerTest {
     EmployeeJpaRepository employeeJpaRepository;
 
     @BeforeEach
-    void clearEmployeeInRepository(){
+    void prepareData(){
         employeeJpaRepository.deleteAll();
     }
 
@@ -167,14 +167,14 @@ public class EmployeeControllerTest {
     @Test
     void should_get_employees_when_perform_get_given_page_and_page_size() throws Exception{
         //given
-        employeeJpaRepository.save(new Employee(0, "Sally", 22, "female", 10000));
-        employeeJpaRepository.save(new Employee(1, "Lily", 25, "female", 16000));
-        employeeJpaRepository.save(new Employee(2, "Tom", 25, "male", 16000));
+        employeeJpaRepository.save(new Employee(null, "Sally", 22, "female", 10000));
+        employeeJpaRepository.save(new Employee(null, "Lily", 25, "female", 16000));
+        employeeJpaRepository.save(new Employee(null, "Tom", 25, "male", 16000));
 
 
         //when
         client.perform(MockMvcRequestBuilders.get("/employees")
-                        .param("page","1").param("pageSize","2"))
+                        .param("page","0").param("pageSize","2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", containsInAnyOrder("Sally","Lily")))

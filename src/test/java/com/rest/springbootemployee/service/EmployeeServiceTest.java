@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.rest.springbootemployee.service.EmployeeService;
@@ -80,7 +81,7 @@ public class EmployeeServiceTest {
     @Test
     void should_a_employee_when_delete_given_id() {
         //given
-
+        given(employeeJpaRepository.existsById(1)).willReturn(true);
         //when
         employeeService.delete(1);
 
@@ -128,10 +129,11 @@ public class EmployeeServiceTest {
         Employee SecondEmployee = new Employee(2, "Mathew", 25, "female", 8000);
         employees.add(FirstEmployee);
         employees.add(SecondEmployee);
-        given(employeeJpaRepository.findAll(PageRequest.of(1,2)).toList()).willReturn(employees);
+        PageImpl<Employee> employeesPage = new PageImpl<>(employees);
+        given(employeeJpaRepository.findAll(PageRequest.of(0,2))).willReturn(employeesPage);
 
         //when
-        List<Employee> employeeByPage = employeeService.findByPage(1, 2);
+        List<Employee> employeeByPage = employeeService.findByPage(0, 2);
 
         //then
         assertEquals(employeeByPage.get(0), FirstEmployee);
