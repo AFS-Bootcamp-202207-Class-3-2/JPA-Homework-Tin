@@ -1,46 +1,56 @@
 package com.rest.springbootemployee.service;
 
+import com.rest.springbootemployee.execption.EmployeeNotFoundException;
 import com.rest.springbootemployee.pojo.Employee;
+import com.rest.springbootemployee.repository.EmployeeJpaRepository;
 import com.rest.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class EmployeeService {
-
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeJpaRepository employeeJpaRepository;
 
     public List<Employee> findAll() {
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeJpaRepository.findAll();
         return employees;
     }
 
-    public Employee update(int id, Employee employee) {
-        Employee updatedEmployee = employeeRepository.update(id, employee);
-        return updatedEmployee;
+    public Employee update(int id, Employee toUpdate) {
+        Employee employee = findById(id);
+        if(toUpdate.getAge() != null){
+            employee.setAge(toUpdate.getAge());
+        }
+        if(toUpdate.getSalary() != null){
+            employee.setSalary(toUpdate.getSalary());
+        }
+        Employee saveEmployee = employeeJpaRepository.save(employee);
+        return saveEmployee;
     }
 
     public Employee create(Employee employee) {
-        return employeeRepository.insert(employee);
+        return employeeJpaRepository.save(employee);
     }
 
     public void delete(int id) {
-        employeeRepository.delete(id);
+        employeeJpaRepository.deleteById(id);
     }
 
     public Employee findById(int id) {
-        return employeeRepository.findById(id);
+        return employeeJpaRepository.findById(id)
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<Employee> findByGender(String gender) {
-        return employeeRepository.findByGender(gender);
+        return employeeJpaRepository.findAllByGender(gender);
     }
 
-    public List<Employee> findByPage(int page, int pageSize) {
-        return employeeRepository.findByPage(page, pageSize);
+    public Page<Employee> findByPage(int pageNumber, int pageSize) {
+        return employeeJpaRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
 }
