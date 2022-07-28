@@ -1,6 +1,7 @@
 package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.execption.CompanyNotFoundException;
+import com.rest.springbootemployee.execption.EmployeeNotFoundException;
 import com.rest.springbootemployee.pojo.Company;
 import com.rest.springbootemployee.pojo.Employee;
 import com.rest.springbootemployee.repository.CompanyJpaRepository;
@@ -37,10 +38,14 @@ public class CompanyService {
         if (company.getCompanyName() != null) {
             updatedCompany.setCompanyName(company.getCompanyName());
         }
-        return companyJpaRepository.save(company);
+        return companyJpaRepository.save(updatedCompany);
     }
 
     public void delete(int id) {
+        boolean exists = companyJpaRepository.existsById(id);
+        if (!exists) {
+            throw new CompanyNotFoundException();
+        }
         companyJpaRepository.deleteById(id);
     }
 
