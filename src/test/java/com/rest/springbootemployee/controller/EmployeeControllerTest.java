@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.pojo.Employee;
-import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.EmployeeJpaRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -22,23 +23,24 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles(profiles = "test")
 public class EmployeeControllerTest {
 
     @Autowired
     MockMvc client;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeJpaRepository employeeJpaRepository;
 
     @BeforeEach
     void clearEmployeeInRepository(){
-        employeeRepository.clean();
+        employeeJpaRepository.deleteAll();
     }
 
     @Test
     void should_get_all_employee_when_perform_get_given_employees() throws Exception{
         //given
-        employeeRepository.insert(new Employee(1, "Sally", 22, "female", 10000));
+        employeeJpaRepository.save(new Employee(1, "Sally", 22, "female", 10000));
 
         //when
         client.perform(MockMvcRequestBuilders.get("/employees"))
@@ -74,7 +76,7 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(2000));
 
         //then
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeJpaRepository.findAll();
         assertThat(employees, hasSize(1));
         assertThat(employees.get(0).getName(), equalTo("Lisa"));
         assertThat(employees.get(0).getAge(), equalTo(21));
@@ -85,7 +87,7 @@ public class EmployeeControllerTest {
     @Test
     void should_update_employee_when_perform_put_given_a_new_employee() throws Exception {
         //given
-        employeeRepository.insert(new Employee(0, "Lisa", 22, "female", 10000));
+        Employee employee = employeeJpaRepository.save(new Employee(0, "Lisa", 22, "female", 10000));
         String updateEmployeeJson ="{\n" +
                 "        \"name\": \"Lisa\",\n" +
                 "        \"age\": 66,\n" +
@@ -94,7 +96,7 @@ public class EmployeeControllerTest {
                 "    }";
 
         //when
-        client.perform(MockMvcRequestBuilders.put("/employees/{id}",0)
+        client.perform(MockMvcRequestBuilders.put("/employees/{id}",employee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateEmployeeJson))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
@@ -104,7 +106,7 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(2000));
 
         //then
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeJpaRepository.findAll();
         assertThat(employees, hasSize(1));
         assertThat(employees.get(0).getName(), equalTo("Lisa"));
         assertThat(employees.get(0).getAge(), equalTo(66));
@@ -116,24 +118,24 @@ public class EmployeeControllerTest {
     @Test
     void should_delete_employee_when_perform_delete_given_a_employee() throws Exception {
         //given
-        employeeRepository.insert(new Employee(0, "Lisa", 22, "female", 10000));
+        Employee employee = employeeJpaRepository.save(new Employee(0, "Lisa", 22, "female", 10000));
 
         //when
-        client.perform(MockMvcRequestBuilders.delete("/employees/{id}",0))
+        client.perform(MockMvcRequestBuilders.delete("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         //then
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeJpaRepository.findAll();
         assertThat(employees, hasSize(0));
     }
 
     @Test
     void should_get_a_employee_when_perform_get_given_id() throws Exception{
         //given
-        employeeRepository.insert(new Employee(0, "Sally", 22, "female", 10000));
+        Employee employee = employeeJpaRepository.save(new Employee(0, "Sally", 22, "female", 10000));
 
         //when
-        client.perform(MockMvcRequestBuilders.get("/employees/{id}",0))
+        client.perform(MockMvcRequestBuilders.get("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Sally"))
@@ -147,7 +149,7 @@ public class EmployeeControllerTest {
     @Test
     void should_get_employees_when_perform_get_given_gender() throws Exception{
         //given
-        employeeRepository.insert(new Employee(0, "Sally", 22, "female", 10000));
+        employeeJpaRepository.save(new Employee(0, "Sally", 22, "female", 10000));
 
         //when
         client.perform(MockMvcRequestBuilders.get("/employees")
@@ -165,9 +167,9 @@ public class EmployeeControllerTest {
     @Test
     void should_get_employees_when_perform_get_given_page_and_page_size() throws Exception{
         //given
-        employeeRepository.insert(new Employee(0, "Sally", 22, "female", 10000));
-        employeeRepository.insert(new Employee(1, "Lily", 25, "female", 16000));
-        employeeRepository.insert(new Employee(2, "Tom", 25, "male", 16000));
+        employeeJpaRepository.save(new Employee(0, "Sally", 22, "female", 10000));
+        employeeJpaRepository.save(new Employee(1, "Lily", 25, "female", 16000));
+        employeeJpaRepository.save(new Employee(2, "Tom", 25, "male", 16000));
 
 
         //when
