@@ -1,14 +1,17 @@
 package com.rest.springbootemployee.pojo;
 
 
+import javax.persistence.*;
 import java.util.List;
-
+@Entity
 public class Company {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String companyName;
-
+    @OneToMany
+    @JoinColumn(name = "companyId")
     private List<Employee> employeeList;
 
     public Company() {
