@@ -32,6 +32,15 @@ public class Employee{
         this.salary = salary;
     }
 
+    public Employee(Integer id, String name, Integer age, String gender, Integer salary, Integer companyId) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.companyId = companyId;
+    }
+
     public Integer getId() {
         return id;
     }
