@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public Page<Employee> findByPage(@RequestParam int page, @RequestParam int pageSize){
+    public List<Employee> findByPage(@RequestParam int page, @RequestParam int pageSize){
         return employeeService.findByPage(page,pageSize);
     }
 

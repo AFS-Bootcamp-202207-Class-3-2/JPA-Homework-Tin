@@ -1,9 +1,11 @@
 package com.rest.springbootemployee.service;
 
+import com.rest.springbootemployee.execption.CompanyNotFoundException;
 import com.rest.springbootemployee.pojo.Company;
 import com.rest.springbootemployee.pojo.Employee;
-import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.CompanyJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,33 +14,38 @@ import java.util.List;
 public class CompanyService {
 
     @Autowired
-    private CompanyRepository companyRepository;
+    private CompanyJpaRepository companyJpaRepository;
 
     public List<Company> findAll() {
-        return companyRepository.findAll();
+        return companyJpaRepository.findAll();
     }
 
     public Company findById(int id) {
-        return companyRepository.findById(id);
+        return companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
-    public List<Company> findByPage(int page, int pageSize) {
-        return companyRepository.findByPage(page, pageSize);
+    public List<Company> findByPage(int pageNumber, int pageSize) {
+        return companyJpaRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
     }
 
     public Company create(Company company) {
-        return companyRepository.insert(company);
+        return companyJpaRepository.save(company);
     }
 
     public Company update(int id, Company company) {
-        return companyRepository.update(id, company);
+        Company updatedCompany = findById(id);
+        if (company.getCompanyName() != null) {
+            updatedCompany.setCompanyName(company.getCompanyName());
+        }
+        return companyJpaRepository.save(company);
     }
 
     public void delete(int id) {
-        companyRepository.delete(id);
+        companyJpaRepository.deleteById(id);
     }
 
     public List<Employee> findEmployeesById(Integer id) {
-        return companyRepository.findEmployeesById(id);
+        Company company = findById(id);
+        return company.getEmployeeList();
     }
 }

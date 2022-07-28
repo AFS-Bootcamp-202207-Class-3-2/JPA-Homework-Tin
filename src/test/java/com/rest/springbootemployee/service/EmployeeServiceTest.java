@@ -128,13 +128,14 @@ public class EmployeeServiceTest {
         Employee SecondEmployee = new Employee(2, "Mathew", 25, "female", 8000);
         employees.add(FirstEmployee);
         employees.add(SecondEmployee);
-//        given(employeeJpaRepository.findAll(PageRequest.of(1,2)).willReturn(employees);
+        given(employeeJpaRepository.findAll(PageRequest.of(1,2)).toList()).willReturn(employees);
 
         //when
-        Page<Employee> employeeByPage = employeeService.findByPage(1, 2);
+        List<Employee> employeeByPage = employeeService.findByPage(1, 2);
 
         //then
-        assertEquals(employeeByPage.getContent().get(0), FirstEmployee);
-        assertEquals(employeeByPage.getContent().get(0), SecondEmployee);
+        assertEquals(employeeByPage.get(0), FirstEmployee);
+        assertEquals(employeeByPage.get(1), SecondEmployee);
+
     }
 }
