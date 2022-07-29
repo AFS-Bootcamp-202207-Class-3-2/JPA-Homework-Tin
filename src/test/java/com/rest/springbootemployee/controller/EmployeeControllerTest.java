@@ -103,7 +103,7 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lisa"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(66))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("female"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(2000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").doesNotExist());
 
         //then
         List<Employee> employees = employeeJpaRepository.findAll();
