@@ -41,7 +41,7 @@ public class EmployeeController {
     public List<EmployeeResponse> getEmployeeByGender(@RequestParam("gender")String gender){
         return employeeService.findByGender(gender)
                 .stream()
-                .map(employee -> employeeMapper.toResponse(employee))
+                .map(employeeMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -52,8 +52,9 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee create(@RequestBody Employee employee){
-        return employeeService.create(employee);
+    public EmployeeResponse create(@RequestBody EmployeeRequest employeeRequest){
+        Employee employee = employeeService.create(employeeMapper.toEntity(employeeRequest));
+        return employeeMapper.toResponse(employee);
     }
 
     @PutMapping("/{id}")
