@@ -135,7 +135,6 @@ class CompanyControllerTest {
     void should_create_a_new_company_when_perform_post_given_a_company() throws Exception{
         //given
         String newCompanyJson = "{\n" +
-                "    \"id\": null,\n" +
                 "    \"companyName\": \"ABC\"" +
                 "}";
 

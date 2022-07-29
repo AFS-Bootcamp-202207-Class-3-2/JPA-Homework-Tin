@@ -13,6 +13,9 @@ public class CompanyResponse {
 
     private List<EmployeeResponse> employeeList;
 
+    public CompanyResponse() {
+    }
+
     public Integer getId() {
         return id;
     }

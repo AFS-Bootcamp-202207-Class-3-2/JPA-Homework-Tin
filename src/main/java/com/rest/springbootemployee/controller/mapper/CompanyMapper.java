@@ -20,11 +20,13 @@ public class CompanyMapper {
 
     public CompanyResponse toResponse(Company company){
         CompanyResponse companyResponse = new CompanyResponse();
-        List<EmployeeResponse> employeeResponses = company.getEmployeeList().stream()
-                .map(employeeMapper::toResponse)
-                .collect(Collectors.toList());
+        if(company.getEmployeeList() != null){
+            List<EmployeeResponse> employeeResponses = company.getEmployeeList().stream()
+                    .map(employeeMapper::toResponse)
+                    .collect(Collectors.toList());
+            companyResponse.setEmployeeList(employeeResponses);
+        }
         BeanUtils.copyProperties(company, companyResponse);
-        companyResponse.setEmployeeList(employeeResponses);
         return companyResponse;
     }
 
