@@ -46,8 +46,11 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public List<Employee> findByPage(@RequestParam int page, @RequestParam int pageSize){
-        return employeeService.findByPage(page,pageSize);
+    public List<EmployeeResponse> findByPage(@RequestParam int page, @RequestParam int pageSize){
+        return employeeService.findByPage(page, pageSize)
+                 .stream()
+                 .map(employee -> employeeMapper.toResponse(employee))
+                 .collect(Collectors.toList());
     }
 
     @PostMapping

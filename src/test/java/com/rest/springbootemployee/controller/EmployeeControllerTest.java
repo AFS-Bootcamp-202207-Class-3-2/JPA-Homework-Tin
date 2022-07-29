@@ -179,8 +179,7 @@ public class EmployeeControllerTest {
 //                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", containsInAnyOrder("Sally","Lily")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].age", containsInAnyOrder(22, 25)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(is("female"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].salary", containsInAnyOrder(10000, 16000)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(is("female"))));
 
         //then
     }
