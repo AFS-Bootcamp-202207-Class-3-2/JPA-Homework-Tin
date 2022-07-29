@@ -17,8 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

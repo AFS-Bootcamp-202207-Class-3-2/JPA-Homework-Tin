@@ -114,7 +114,6 @@ public class EmployeeControllerTest {
         assertThat(employees.get(0).getSalary(), equalTo(2000));
     }
 
-
     @Test
     void should_delete_employee_when_perform_delete_given_a_employee() throws Exception {
         //given
@@ -142,8 +141,6 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("female"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").doesNotExist());
-
-        //then
     }
 
     @Test
@@ -160,8 +157,6 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("female"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").doesNotExist());
-
-        //then
     }
 
     @Test
@@ -171,16 +166,13 @@ public class EmployeeControllerTest {
         employeeJpaRepository.save(new Employee(null, "Lily", 25, "female", 16000));
         employeeJpaRepository.save(new Employee(null, "Tom", 25, "male", 16000));
 
-
         //when
         client.perform(MockMvcRequestBuilders.get("/employees")
                         .param("page","0").param("pageSize","2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", containsInAnyOrder("Sally","Lily")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].age", containsInAnyOrder(22, 25)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(is("female"))));
-
-        //then
     }
 }

@@ -3,16 +3,13 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.pojo.Employee;
 import com.rest.springbootemployee.repository.EmployeeJpaRepository;
-import com.rest.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.rest.springbootemployee.service.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +135,5 @@ public class EmployeeServiceTest {
         //then
         assertEquals(employeeByPage.get(0), FirstEmployee);
         assertEquals(employeeByPage.get(1), SecondEmployee);
-
     }
 }

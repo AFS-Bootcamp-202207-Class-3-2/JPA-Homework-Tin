@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,7 +135,6 @@ public class CompanyServiceTest {
         given(companyJpaRepository.existsById(1)).willReturn(true);
         //when
         companyService.delete(1);
-
         //then
         verify(companyJpaRepository,times(1)).deleteById(1);
     }
