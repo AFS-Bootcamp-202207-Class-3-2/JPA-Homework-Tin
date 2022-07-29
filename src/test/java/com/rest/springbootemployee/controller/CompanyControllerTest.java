@@ -44,9 +44,9 @@ class CompanyControllerTest {
     @BeforeEach
     void prepareData(){
         companyJpaRepository.deleteAll();
-//        Company company = new Company();
-//        company.setCompanyName("ABC");
-//        preparedCompany = companyJpaRepository.save(company);
+        Company company = new Company();
+        company.setCompanyName("ABC");
+        preparedCompany = companyJpaRepository.save(company);
         companyJpaRepository.flush();
     }
 
@@ -126,12 +126,6 @@ class CompanyControllerTest {
         employeeSally();
         employeeLily();
 
-        Company company = new Company();
-        company.setCompanyName("DEF");
-        Company getCompanyId = companyJpaRepository.save(company);
-        Employee employee = new Employee(1, "Tom", 25, "Male", 6000, getCompanyId.getId());
-        employeeJpaRepository.save(employee);
-
         //when
         MultiValueMap<String, String> paramsMap = new LinkedMultiValueMap<>();
         paramsMap.put("page", Collections.singletonList("0"));
@@ -175,9 +169,6 @@ class CompanyControllerTest {
     @Test
     void should_update_company_when_perform_put_given_a_company() throws Exception{
         //given
-        Company company = new Company();
-        company.setCompanyName("ABC");
-        preparedCompany = companyJpaRepository.save(company);
         String updatedCompanyJson = "{\n" +
                 "    \"companyName\": \"DEF\"" +
                 "}";
@@ -194,7 +185,7 @@ class CompanyControllerTest {
 
         //then
         List<Company> companies = companyJpaRepository.findAll();
-//        assertThat(companies, hasSize(1));
+        assertThat(companies, hasSize(1));
         assertThat(companies.get(0).getCompanyName(), equalTo("DEF"));
     }
 
