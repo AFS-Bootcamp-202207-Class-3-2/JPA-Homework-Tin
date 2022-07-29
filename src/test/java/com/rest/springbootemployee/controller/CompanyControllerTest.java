@@ -128,8 +128,7 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].name", containsInAnyOrder("Sally","Lily")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].age", containsInAnyOrder(22, 26)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].salary", containsInAnyOrder(10000, 5000)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))));
     }
 
     @Test

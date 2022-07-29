@@ -51,8 +51,11 @@ public class CompanyController {
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public List<Company> findCompaniesByPage(@RequestParam int page, @RequestParam int pageSize){
-        return companyService.findByPage(page, pageSize);
+    public List<CompanyResponse> findCompaniesByPage(@RequestParam int page, @RequestParam int pageSize){
+        return companyService.findByPage(page, pageSize)
+                .stream()
+                .map(companyMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
