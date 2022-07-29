@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.controller.dto.EmployeeResponse;
+import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.pojo.Employee;
 import com.rest.springbootemployee.service.EmployeeService;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -17,9 +20,15 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
     @GetMapping
-    public List<Employee> getEmployees(){
-        return employeeService.findAll();
+    public List<EmployeeResponse> getEmployees(){
+        return employeeService.findAll()
+                .stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
