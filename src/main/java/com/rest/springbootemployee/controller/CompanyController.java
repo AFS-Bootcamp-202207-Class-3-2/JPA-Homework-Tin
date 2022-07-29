@@ -1,5 +1,8 @@
 package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.controller.dto.CompanyResponse;
+import com.rest.springbootemployee.controller.mapper.CompanyMapper;
+import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.pojo.Company;
 import com.rest.springbootemployee.pojo.Employee;
@@ -9,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -18,9 +22,15 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private CompanyMapper companyMapper;
+
     @GetMapping
-    public List<Company> getCompanies(){
-        return companyService.findAll();
+    public List<CompanyResponse> getCompanies(){
+        return companyService.findAll()
+                .stream()
+                .map(companyMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

@@ -78,10 +78,7 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].name", containsInAnyOrder("Sally","Lily")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].age", containsInAnyOrder(22, 26)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].salary", containsInAnyOrder(10000, 5000)));
-
-        //then
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))));
     }
 
     @Test
@@ -99,8 +96,6 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].age", containsInAnyOrder(22, 26)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].gender", everyItem(is("Female"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].salary", containsInAnyOrder(10000, 5000)));
-
-        //then
     }
 
     @Test
@@ -116,8 +111,6 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].age", containsInAnyOrder(22, 26)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(is("Female"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].salary", containsInAnyOrder(10000, 5000)));
-
-        //then
     }
 
     @Test
@@ -139,8 +132,6 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].age", containsInAnyOrder(22, 26)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].salary", containsInAnyOrder(10000, 5000)));
-
-        //then
     }
 
     @Test
@@ -158,7 +149,6 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("ABC"));
-
 
         //then
         List<Company> companies = companyJpaRepository.findAll();
@@ -180,8 +170,6 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("DEF"));
-
-        //then
 
         //then
         List<Company> companies = companyJpaRepository.findAll();
