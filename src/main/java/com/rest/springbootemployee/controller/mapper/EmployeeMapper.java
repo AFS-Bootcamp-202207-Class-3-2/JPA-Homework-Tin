@@ -15,7 +15,9 @@ public class EmployeeMapper {
         return employeeResponse;
     }
 
-//    public Employee toEntity(EmployeeRequest employeeRequest) {
-//
-//    }
+    public Employee toEntity(EmployeeRequest employeeRequest) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeRequest, employee);
+        return employee;
+    }
 }

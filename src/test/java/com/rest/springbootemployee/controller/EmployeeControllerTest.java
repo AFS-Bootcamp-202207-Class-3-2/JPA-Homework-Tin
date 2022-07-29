@@ -141,7 +141,7 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Sally"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("female"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(10000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").doesNotExist());
 
         //then
     }

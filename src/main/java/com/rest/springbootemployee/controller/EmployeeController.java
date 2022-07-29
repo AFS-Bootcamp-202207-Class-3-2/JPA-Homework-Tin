@@ -1,5 +1,6 @@
 package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.controller.dto.EmployeeRequest;
 import com.rest.springbootemployee.controller.dto.EmployeeResponse;
 import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.repository.EmployeeRepository;
@@ -32,8 +33,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Integer id){
-        return employeeService.findById(id);
+    public EmployeeResponse getEmployeeById(@PathVariable Integer id){
+        return employeeMapper.toResponse(employeeService.findById(id));
     }
 
     @GetMapping(params = {"gender"})
