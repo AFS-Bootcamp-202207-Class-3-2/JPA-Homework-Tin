@@ -75,10 +75,7 @@ class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].name", containsInAnyOrder("Sally","Lily")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].age", containsInAnyOrder(22, 26)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"));
     }
 
     @Test
@@ -91,10 +88,7 @@ class CompanyControllerTest {
         client.perform(MockMvcRequestBuilders.get("/companies/{id}",preparedCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("ABC"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].name", containsInAnyOrder("Sally","Lily")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].age", containsInAnyOrder(22, 26)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeList[*].gender", everyItem(is("Female"))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("ABC"));
     }
 
     @Test
@@ -125,10 +119,7 @@ class CompanyControllerTest {
         .params(paramsMap))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].name", containsInAnyOrder("Sally","Lily")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].age", containsInAnyOrder(22, 26)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employeeList[*].gender", everyItem(is("Female"))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("ABC"));
     }
 
     @Test
